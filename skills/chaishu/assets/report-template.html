@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深度细拆报告：【书名】</title>
+<style>
+  :root{
+    --bg:#f6f4f0;
+    --panel:#ffffff;
+    --ink:#1f1b16;
+    --ink-soft:#5a5247;
+    --line:#e6e0d6;
+    --accent:#9a2b1e;       /* 玄·朱砂红 */
+    --accent-soft:#f3e3dd;
+    --gold:#b08328;
+    --gold-soft:#f6ecd6;
+    --code-bg:#272220;
+    --code-ink:#f1e9df;
+    --shadow:0 1px 3px rgba(40,30,20,.08),0 8px 24px rgba(40,30,20,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1020px;margin:0 auto;padding:32px 24px 80px}
+  main{width:100%}
+  /* cover */
+  .cover{
+    background:linear-gradient(135deg,#2a1410 0%,#5a2018 55%,#8a2a1c 100%);
+    color:#f7ede6;border-radius:18px;padding:40px 38px;box-shadow:var(--shadow);
+    position:relative;overflow:hidden;margin-bottom:20px;
+  }
+  .cover::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;
+    background:radial-gradient(circle,rgba(214,160,60,.35),transparent 70%);border-radius:50%}
+  .cover .tag{display:inline-block;font-size:12px;letter-spacing:.2em;border:1px solid rgba(214,160,60,.6);
+    color:#e9c878;padding:4px 12px;border-radius:999px;margin-bottom:16px}
+  .cover h1{font-size:34px;font-weight:800;letter-spacing:.04em;margin-bottom:6px;position:relative}
+  .cover .sub{font-size:15px;color:#e7cdbf;font-weight:400;margin-bottom:20px}
+  .cover .meta{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:13px;color:#f0dccf;position:relative}
+  .cover .meta b{color:#fff;font-weight:600}
+  /* 目录导航（标题下方 · 可折叠） */
+  nav{
+    position:sticky;top:14px;z-index:50;
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:10px 12px;margin-bottom:26px;
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .nav-head{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+  .nav-head h4{font-size:12px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;
+    margin:0;white-space:nowrap;display:flex;align-items:center;gap:6px}
+  .nav-head h4::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--accent);display:inline-block}
+  .nav-toggle{flex:0 0 auto;width:26px;height:26px;border:1px solid var(--line);background:var(--accent-soft);
+    color:var(--accent);border-radius:8px;cursor:pointer;font-size:15px;line-height:1;font-weight:700;
+    display:flex;align-items:center;justify-content:center;transition:.18s}
+  .nav-toggle:hover{background:var(--accent);color:#fff}
+  .nav-body{display:flex;flex-wrap:wrap;gap:7px;flex:1 1 auto;min-width:0}
+  nav a{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:999px;
+    background:#faf6f0;border:1px solid var(--line);color:var(--ink-soft);text-decoration:none;
+    font-size:13px;font-weight:500;transition:.18s;white-space:nowrap}
+  nav a:hover{background:var(--accent-soft);color:var(--accent);border-color:#e0b3a6;transform:translateY(-1px)}
+  nav a .n{color:var(--gold);font-weight:800;font-size:12px}
+  /* 折叠态 */
+  nav.collapsed{justify-content:space-between;max-width:150px;cursor:pointer}
+  nav.collapsed .nav-body{display:none}
+  /* sections */
+  section{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:30px 34px;margin-bottom:24px;box-shadow:var(--shadow);scroll-margin-top:96px}
+  section>h2{font-size:22px;font-weight:800;margin-bottom:6px;color:var(--ink);
+    display:flex;align-items:center;gap:12px}
+  section>h2 .idx{font-size:13px;font-weight:700;color:#fff;background:var(--accent);
+    width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .lead{color:var(--ink-soft);font-size:14.5px;margin:8px 0 18px;border-left:3px solid var(--accent-soft);padding-left:14px}
+  h3{font-size:17px;font-weight:700;margin:22px 0 10px;color:var(--accent);display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--gold);display:inline-block}
+  p{margin:10px 0;color:var(--ink);font-size:15px}
+  ul,ol{margin:10px 0 10px 4px;padding-left:22px}
+  li{margin:7px 0;font-size:15px}
+  .em{color:var(--accent);font-weight:700}
+  strong{color:var(--ink);font-weight:700}
+  /* callout */
+  .callout{background:var(--gold-soft);border:1px solid #e6d3a6;border-left:4px solid var(--gold);
+    border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14.5px;color:#5b4711}
+  .callout b{color:#7a5c10}
+  /* table */
+  .tbl-wrap{overflow-x:auto;margin:16px 0;border-radius:10px;border:1px solid var(--line)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:560px}
+  thead th{background:#2a1410;color:#f3ddcf;font-weight:600;padding:11px 12px;text-align:left;white-space:nowrap}
+  tbody td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink-soft)}
+  tbody tr:nth-child(even){background:#faf6f0}
+  tbody tr:hover{background:var(--accent-soft)}
+  .pill{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:999px;font-weight:600;white-space:nowrap}
+  .pill.red{background:#fae3df;color:#9a2b1e}
+  .pill.gold{background:var(--gold-soft);color:#8a6510}
+  .pill.green{background:#e2f0e4;color:#2f7a45}
+  .pill.blue{background:#e1ecf5;color:#2a6aa0}
+  /* formula code */
+  .formula{background:var(--code-bg);color:var(--code-ink);border-radius:10px;padding:14px 18px;
+    font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:13.5px;line-height:1.9;
+    margin:14px 0;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+  .formula .k{color:#e9a16b}
+  .formula .v{color:#9ad1b3}
+  /* quote / 仿写 */
+  .snippet{background:#fbf7f1;border:1px dashed #d9cdba;border-radius:10px;padding:16px 20px;margin:14px 0;
+    font-size:14.5px;color:#3a332b;line-height:1.95}
+  .snippet p{margin:8px 0;font-size:14.5px;color:#3a332b}
+  .self{background:var(--accent-soft);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px;color:#7a241a}
+  .self b{color:var(--accent)}
+  /* checklist */
+  .check{list-style:none;padding-left:0;margin:14px 0}
+  .check li{position:relative;padding:11px 14px 11px 46px;border:1px solid var(--line);border-radius:10px;
+    margin:9px 0;background:#fdfbf8;font-size:14.5px}
+  .check li::before{content:"✓";position:absolute;left:14px;top:11px;width:22px;height:22px;background:var(--accent);
+    color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+  .num{display:inline-block;min-width:24px;font-weight:800;color:var(--gold)}
+  footer{text-align:center;color:var(--ink-soft);font-size:12.5px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+  @media(max-width:720px){
+    .wrap{padding:18px 14px 60px}
+    .cover{padding:28px 22px}
+    .cover h1{font-size:26px}
+    section{padding:24px 20px}
+    .grid2{grid-template-columns:1fr}
+    nav{top:10px}
+    section{scroll-margin-top:80px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <main>
+
+    <!-- ============ COVER：填充书籍信息 ============ -->
+    <div class="cover">
+      <span class="tag">拆书 · 深度细拆报告</span>
+      <h1>深度细拆报告：【书名】</h1>
+      <div class="sub">【作者】 · 【一句定位，如：传统玄幻头部样本 · 土豆流纯血拆解】</div>
+      <div class="meta">
+        <span><b>作者</b>　【作者】</span>
+        <span><b>分类</b>　【分类】</span>
+        <span><b>字数</b>　【字数】</span>
+        <span><b>章节</b>　【章节数】</span>
+        <span><b>在读</b>　【在读量】</span>
+        <span><b>评分</b>　【评分】</span>
+        <span><b>拆解范围</b>　【如：第1—47章（第一卷完整单元）】</span>
+      </div>
+    </div>
+
+    <!-- ============ 目录导航：章节数与标题保持与下方 section 一致 ============ -->
+    <nav id="nav">
+      <div class="nav-head">
+        <h4>目录</h4>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="折叠/展开导航" title="折叠导航">‹</button>
+      </div>
+      <div class="nav-body">
+        <a href="#s1"><span class="n">一</span>书籍信息与选书理由</a>
+        <a href="#s2"><span class="n">二</span>核心卖点与开篇拆解</a>
+        <a href="#s3"><span class="n">三</span>人设体系拆解</a>
+        <a href="#s4"><span class="n">四</span>节奏与情绪曲线</a>
+        <a href="#s5"><span class="n">五</span>大纲与故事结构</a>
+        <a href="#s6"><span class="n">六</span>赛道读者偏好</a>
+        <a href="#s7"><span class="n">七</span>可复用范式清单</a>
+        <a href="#s8"><span class="n">八</span>仿写训练</a>
+        <a href="#s9"><span class="n">九</span>内化行动清单</a>
+      </div>
+    </nav>
+
+    <!-- ============ S1 书籍信息与选书理由 ============ -->
+    <section id="s1">
+      <h2><span class="idx">一</span>书籍信息与选书理由</h2>
+      <!-- 用 <ul><li><strong>基本信息</strong>：…</li>…</ul> 填充：基本信息/作者分量/选书理由 -->
+    </section>
+
+    <!-- ============ S2 核心卖点与开篇拆解 ============ -->
+    <section id="s2">
+      <h2><span class="idx">二</span>核心卖点与开篇拆解（维度一）</h2>
+      <!-- 子节用 <h3>2.1 …</h3>；要点用 <ul>；"作者为什么这么安排"等结论用 <div class="callout"> -->
+    </section>
+
+    <!-- ============ S3 人设体系拆解 ============ -->
+    <section id="s3">
+      <h2><span class="idx">三</span>人设体系拆解（维度二）</h2>
+      <!-- 主角/金手指/反派/冲突来源 四个 h3 子节；金手指用 <ol> 编号，重点句用 <span class="em"> -->
+    </section>
+
+    <!-- ============ S4 节奏与情绪曲线拆解（核心） ============ -->
+    <section id="s4">
+      <h2><span class="idx">四</span>节奏与情绪曲线拆解（维度三·核心）</h2>
+      <!-- 情绪曲线一句话用 <p><span class="em">…</span></p>；逐章标记用 .tbl-wrap>table（憋屈/爽点/钩子列可留空用 —） -->
+    </section>
+
+    <!-- ============ S5 大纲与故事结构拆解 ============ -->
+    <section id="s5">
+      <h2><span class="idx">五</span>大纲与故事结构拆解（维度四）</h2>
+      <!-- 分卷阶段用 <ol>；危机递进链用 <p> + <span class="em">；标配vs加分项用 .callout -->
+    </section>
+
+    <!-- ============ S6 赛道读者偏好分析 ============ -->
+    <section id="s6">
+      <h2><span class="idx">六</span>赛道读者偏好分析（维度五）</h2>
+      <!-- 雷点清单用 .tbl-wrap>table，状态列用 <span class="pill green">规避</span> -->
+    </section>
+
+    <!-- ============ S7 可复用范式清单 ============ -->
+    <section id="s7">
+      <h2><span class="idx">七</span>可复用范式清单</h2>
+      <!-- 范式编号用 <ol>；公式类范式用 <span class="formula">，关键节点套 <span class="k">高亮 -->
+    </section>
+
+    <!-- ============ S8 仿写训练 ============ -->
+    <section id="s8">
+      <h2><span class="idx">八</span>仿写训练</h2>
+      <!-- 每个仿写片段：<h3>片段标题</h3> + 保留骨架说明 <p><strong>…</strong></p> + 正文 <div class="snippet"><p>…</p></div> + 自评 <div class="self"><b>自评</b>…</div> -->
+    </section>
+
+    <!-- ============ S9 内化行动清单 ============ -->
+    <section id="s9">
+      <h2><span class="idx">九</span>内化行动清单</h2>
+      <!-- 行动条目用 <ul class="check"><li><span class="num">1.</span>…</li></ul> -->
+    </section>
+
+    <footer>
+      拆书红线自查：本报告只提取叙事机制、情绪模型与节奏范式，未复制任何具体情节/人设/桥段；仿写片段均已替换世界观、人名与能力，仅保留可复用的叙事骨架。<br>
+      © 拆书工作流 · 基于【作者】《【书名】》【拆解范围】拆解
+    </footer>
+  </main>
+</div>
+<script>
+  (function(){
+    var nav=document.getElementById('nav');
+    var btn=document.getElementById('navToggle');
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var c=nav.classList.toggle('collapsed');
+      btn.textContent=c?'›':'‹';
+      btn.title=c?'展开导航':'折叠导航';
+    });
+    nav.addEventListener('click',function(e){
+      if(nav.classList.contains('collapsed') && !e.target.closest('.nav-toggle')){
+        nav.classList.remove('collapsed');
+        btn.textContent='‹';
+        btn.title='折叠导航';
+      }
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+.pytest_cache/
+.venv/
+venv/
+.coverage
+htmlcov/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# 本地工作目录（不入库）
+拆书/
+知识库/
+
+# Reasonix 本地元数据（不上传）
+.reasonix/
+**/_user_meta.json
+
+# 本地文档草稿（不入库）
+docs/推广文章.md
