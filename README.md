@@ -1,12 +1,12 @@
-# chaishu · 网文拆书工具箱
+# chaishu · 网文拆书与写书工具箱
 
 [![CI](https://github.com/learnevery/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/learnevery/skills/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](./pyproject.toml)
 
-**逆向解剖爆款网文，提炼成可复用的创作方法论。** 本项目把"拆书"这套网文作者的行业基本功做成了开源工具箱：两个可直接安装的 AI 技能 + 一个零依赖的 Python 命令行工具，覆盖 **拆 → 提炼 → 入库 → 内化** 完整闭环。
+**逆向解剖爆款网文，再用提炼出的范式写你自己的书。** 本项目把网文作者的行业基本功做成了开源工具箱：三个可直接安装的 AI 技能 + 一个零依赖的 Python 命令行工具，覆盖 **拆 → 入库 → 写 → 校验** 完整闭环。
 
-> 拆书是研究"这本书为什么火"的工业化叙事逻辑（开篇钩子、人设体系、节奏情绪曲线、大纲结构、赛道偏好），只借鉴骨架、不复制血肉。
+> 拆书是研究"这本书为什么火"的工业化叙事逻辑（开篇钩子、人设体系、节奏情绪曲线、大纲结构、赛道偏好）；写书则用这些市场验证过的范式驱动创作。只借鉴骨架、不复制血肉。
 
 ---
 
@@ -15,7 +15,8 @@
 | 组件 | 说明 |
 |------|------|
 | `skills/chaishu` | AI 拆书技能：五大维度拆解、粗拆/深度细拆双模式、仿写训练，产出 MD + 精排版 HTML 双格式报告 |
-| `skills/chaishu-builder` | AI 入库技能：把拆书精华持续沉淀到 人设/剧情/爽点/节奏/金手指 五大知识库 |
+| `skills/chaishu-builder` | AI 入库技能：把拆书精华持续沉淀到 人设/剧情/爽点/节奏/金手指/范式 知识库 |
+| `skills/xieshu` | AI 写书技能：端到端创作整部小说——问答定位、大纲规划、逐章创作（3000-5000 字/章、悬念钩子、去 AI 味）、自动校验；**自动检测并消费上述知识库** |
 | `chaishu` CLI | 命令行工具：报告骨架生成、MD→HTML 渲染、报告校验、规则化知识库入库、技能打包，**不依赖 AI 也能跑通全流程** |
 
 ## 快速开始
@@ -40,6 +41,27 @@ chaishu kb add 拆书/拆书报告-神通者-深度细拆.md
 chaishu kb stats
 ```
 
+## 拆 → 写 闭环
+
+知识库是拆与写之间的桥。拆书侧（`chaishu` + `chaishu-builder`）往里沉淀，写书侧（`xieshu`）取用：
+
+```
+chaishu 拆书 ──→ 拆书报告 ──→ kb add / chaishu-builder ──→ 知识库（6 个 md 文件）
+                                                              │
+                                                              ▼
+xieshu 写书：Phase 0 检测知识库 → 问答选项带同赛道推荐 → 大纲套用库内
+情绪曲线/人设搭配/金手指边界 → 每章按大纲标注回查爽点写法与钩子样式
+```
+
+| 写书阶段 | 读取 | 用法 |
+|---------|------|------|
+| Phase 0 初始化 | 全部 | 检测知识库，报告积累规模，声明将套用已验证范式 |
+| Phase 1 问答 | 剧情/爽点 | 题材选项标记📦同赛道积累，冲突选项纳入库内高频类型 |
+| Phase 2 规划 | 节奏/剧情/人设/金手指/范式 | 情绪曲线、危机递进链、人设搭配逻辑、金手指边界从库内取；每章标注爽点与钩子类型 |
+| Phase 3 写作 | 爽点/范式 | 每章写前回查本章爽点的铺垫→释放结构与钩子写法 |
+
+没有知识库时 `xieshu` 照常独立工作（内置通用写作指南）；对接契约详见 [skills/xieshu/references/flows/kb-integration.md](./skills/xieshu/references/flows/kb-integration.md)。
+
 ### 命令一览
 
 | 命令 | 作用 |
@@ -55,9 +77,9 @@ chaishu kb stats
 
 技能面向支持 SKILL.md 格式的智能体平台：
 
-1. 下载 [skills/chaishu.zip](./skills/chaishu.zip) 与 [skills/chaishu-builder.zip](./skills/chaishu-builder.zip)；
+1. 下载 [skills/chaishu.zip](./skills/chaishu.zip)、[skills/chaishu-builder.zip](./skills/chaishu-builder.zip) 与 [skills/xieshu.zip](./skills/xieshu.zip)；
 2. 在支持 SKILL.md 的智能体平台中执行技能导入（如 `/install-capability`），选择本地 zip 导入；
-3. 推荐搭配：先用 `chaishu` 拆书写报告，再用 `chaishu-builder`（或 `chaishu kb add`）把精华沉淀进知识库。
+3. 推荐搭配：先用 `chaishu` 拆书写报告，用 `chaishu-builder`（或 `chaishu kb add`）把精华沉淀进知识库，最后用 `xieshu` 基于知识库写自己的书。
 
 技能源码就是仓库里的 `skills/` 目录，修改后执行 `chaishu pack` 重新打包。
 
@@ -79,9 +101,10 @@ chaishu kb stats
 
 ```
 .
-├── skills/                  # 两个 AI 技能源码 + 可下载 zip
+├── skills/                  # 三个 AI 技能源码 + 可下载 zip
 │   ├── chaishu/         #   拆书技能（五大维度手册/报告模板/HTML规范/仿写指南）
-│   └── chaishu-builder/ #   知识库入库技能（追加格式规范）
+│   ├── chaishu-builder/ #   知识库入库技能（追加格式规范）
+│   └── xieshu/          #   写书技能（8 流程文档 + 9 写作指南 + 字数校验脚本）
 ├── src/chaishu/            # CLI 源码（零运行时依赖）
 │   ├── cli.py               #   命令入口
 │   ├── mdrender.py          #   Markdown 子集解析 + HTML 渲染
@@ -104,6 +127,10 @@ chaishu kb stats
 ## 贡献
 
 欢迎提交 PR：补充拆解维度检查清单、改进报告/HTML 模板、CLI 新功能（附测试）。参见 [CONTRIBUTING.md](./CONTRIBUTING.md)。
+
+## 致谢
+
+`skills/xieshu` 基于 [penglonghuang/chinese-novelist-skill](https://github.com/penglonghuang/chinese-novelist-skill)（MIT）改造，感谢原作者 [@PenglongHuang](https://github.com/PenglongHuang)。
 
 ## License
 
